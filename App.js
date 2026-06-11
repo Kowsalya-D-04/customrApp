@@ -1,12 +1,14 @@
+import 'react-native-get-random-values';
 import { NavigationContainer } from '@react-navigation/native';
+import LanguageProvider from './components/contexts/LanguageContext';
 import AppNavigator from './navigation/AppNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <LanguageProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </LanguageProvider>
   );
 }
-
-

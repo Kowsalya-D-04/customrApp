@@ -1,9 +1,17 @@
 {
   "expo": {
+    "name": "Rightpolamright Customer",
+    "slug": "customrapp",
+    "version": "1.0.1",
+    "android": {
+      "versionCode": 3,
+      "package": "com.rightpolamright.customer"
+    },
     "extra": {
       "eas": {
-        "projectId": "8cb7da94-b0ba-4368-92e1-97ebe214652b"
+        "projectId": "4dd646fb-b616-4d5a-a8ef-58900dde5319"
       }
-    }
+    },
+    "owner": "kowsalya.d"
   }
 }
