@@ -2132,6 +2132,506 @@
 // });
 
 
+// import { useState } from 'react';
+// import {
+//   ActivityIndicator,
+//   Alert,
+//   Keyboard,
+//   KeyboardAvoidingView,
+//   Platform,
+//   ScrollView,
+//   StyleSheet,
+//   Text,
+//   TextInput,
+//   TouchableOpacity,
+//   TouchableWithoutFeedback,
+//   View,
+// } from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+// import { customerAPI } from '../services/api';
+
+// const C = {
+//   primary:       '#FF6A00',
+//   primaryLight:  '#FFF4EC',
+//   white:         '#FFFFFF',
+//   textPrimary:   '#111111',
+//   textSecondary: '#666666',
+//   border:        '#EEEEEE',
+//   bg:            '#F8F8F8',
+//   error:         '#EF4444',
+// };
+
+// const LANG = {
+//   en: {
+//     headerTitle:  'Create Account',
+//     headerSub:    "Join us today, it's free",
+//     labelName:    'Full Name',
+//     labelPhone:   'Phone Number',
+//     labelPassword:'Password',
+//     labelConfirm: 'Confirm Password',
+//     labelEmail:   'Email',
+//     labelAddress: 'Address',
+//     optional:     '(optional)',
+//     phName:   'Your full name',
+//     phPhone:  '10-digit mobile number',
+//     phPwd:    'Min 8 chars, uppercase, number & symbol',
+//     phCpwd:   'Re-enter password',
+//     phEmail:  'your@email.com',
+//     phAddr:   'Your full address',
+//     btnCreate:  'Create Account →',
+//     btnSignin:  'Already have an account? Sign In',
+//     errRequired: 'Please fill all required fields',
+//     errPhone:    'Phone number must be exactly 10 digits',
+//     errPwd:      'Password must be at least 8 characters',
+//     errPwdWeak:  'Password must include uppercase letter, number & special character (!@#$%^&*)',
+//     errMatch:    'Passwords do not match',
+//     successTitle:'Success',
+//     successMsg:  'Registration successful!',
+//     ok:          'OK',
+//     errTitle:    'Registration Failed',
+//     passStrengthWeak:   'Weak',
+//     passStrengthFair:   'Fair',
+//     passStrengthGood:   'Good',
+//     passStrengthStrong: 'Strong',
+//   },
+//   ta: {
+//     headerTitle:  'கணக்கு உருவாக்கு',
+//     headerSub:    'இன்றே சேருங்கள், இலவசம்',
+//     labelName:    'முழு பெயர்',
+//     labelPhone:   'தொலைபேசி எண்',
+//     labelPassword:'கடவுச்சொல்',
+//     labelConfirm: 'கடவுச்சொல் உறுதிப்படுத்து',
+//     labelEmail:   'மின்னஞ்சல்',
+//     labelAddress: 'முகவரி',
+//     optional:     '(விருப்பத்திற்குரியது)',
+//     phName:   'உங்கள் முழு பெயர்',
+//     phPhone:  '10 இலக்க மொபைல் எண்',
+//     phPwd:    'குறைந்தது 8 எழுத்துகள், பெரிய எழுத்து, எண் & சின்னம்',
+//     phCpwd:   'கடவுச்சொல்லை மீண்டும் உள்ளிடவும்',
+//     phEmail:  'உங்கள்@மின்னஞ்சல்.com',
+//     phAddr:   'உங்கள் முழு முகவரி',
+//     btnCreate:  'கணக்கு உருவாக்கு →',
+//     btnSignin:  'ஏற்கனவே கணக்கு உள்ளதா? உள்நுழைக',
+//     errRequired: 'தேவையான அனைத்து தகவல்களையும் நிரப்பவும்',
+//     errPhone:    'தொலைபேசி எண் சரியாக 10 இலக்கங்களாக இருக்க வேண்டும்',
+//     errPwd:      'கடவுச்சொல் குறைந்தது 8 எழுத்துகளாக இருக்க வேண்டும்',
+//     errPwdWeak:  'கடவுச்சொல்லில் பெரிய எழுத்து, எண் & சிறப்பு எழுத்து (!@#$%^&*) இருக்க வேண்டும்',
+//     errMatch:    'கடவுச்சொற்கள் பொருந்தவில்லை',
+//     successTitle:'வெற்றி',
+//     successMsg:  'பதிவு வெற்றிகரமாக முடிந்தது!',
+//     ok:          'சரி',
+//     errTitle:    'பதிவு தோல்வியடைந்தது',
+//     passStrengthWeak:   'பலவீனம்',
+//     passStrengthFair:   'சாதாரணம்',
+//     passStrengthGood:   'நல்லது',
+//     passStrengthStrong: 'வலுவான',
+//   },
+// };
+
+// // ── Password strength (same logic as LoginScreen) ────────
+// const getPasswordStrength = (pass) => {
+//   if (!pass) return null;
+//   const hasUpper   = /[A-Z]/.test(pass);
+//   const hasLower   = /[a-z]/.test(pass);
+//   const hasNumber  = /[0-9]/.test(pass);
+//   const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass);
+//   const isLong     = pass.length >= 8;
+//   const score = [hasUpper, hasLower, hasNumber, hasSpecial, isLong].filter(Boolean).length;
+//   if (score <= 2) return 'weak';
+//   if (score === 3) return 'fair';
+//   if (score === 4) return 'good';
+//   return 'strong';
+// };
+
+// const isStrongPassword = (pass) =>
+//   pass.length >= 8 &&
+//   /[A-Z]/.test(pass) &&
+//   /[0-9]/.test(pass) &&
+//   /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass);
+
+// const STRENGTH_COLOR = {
+//   weak:   '#F44336',
+//   fair:   '#FF9800',
+//   good:   '#2196F3',
+//   strong: '#4CAF50',
+// };
+// const STRENGTH_WIDTH = { weak: '25%', fair: '50%', good: '75%', strong: '100%' };
+
+// // ── Confirm password match indicator ─────────────────────
+// const MatchIndicator = ({ password, confirm, t }) => {
+//   if (!confirm) return null;
+//   const match = password === confirm;
+//   return (
+//     <View style={S.matchRow}>
+//       <Text style={{ fontSize: 12, color: match ? '#4CAF50' : '#F44336', fontWeight: '600' }}>
+//         {match ? '✓ Passwords match' : '✗ Passwords do not match'}
+//       </Text>
+//     </View>
+//   );
+// };
+
+// const RegisterScreen = ({ navigation }) => {
+//   const [formData, setFormData]         = useState({ name: '', phoneNumber: '', email: '', password: '', address: '' });
+//   const [confirmPassword, setConfirmPassword] = useState('');
+//   const [loading, setLoading]           = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirm, setShowConfirm]   = useState(false);
+//   const [lang, setLang]                 = useState('en');
+
+//   const t = LANG[lang];
+
+//   const passStrength   = getPasswordStrength(formData.password);
+//   const strengthLabel  = passStrength ? t[`passStrength${passStrength.charAt(0).toUpperCase() + passStrength.slice(1)}`] : '';
+
+//   const handleChange = (field, value) => {
+//     if (field === 'phoneNumber') value = value.replace(/[^0-9]/g, '');
+//     setFormData(prev => ({ ...prev, [field]: value }));
+//   };
+
+//   const handleRegister = async () => {
+//     Keyboard.dismiss();
+//     const { name, phoneNumber, password } = formData;
+
+//     if (!name || !phoneNumber || !password) {
+//       Alert.alert('Error', t.errRequired);
+//       return;
+//     }
+//     if (!/^\d{10}$/.test(phoneNumber)) {
+//       Alert.alert('Error', t.errPhone);
+//       return;
+//     }
+//     if (password.length < 8) {
+//       Alert.alert('Error', t.errPwd);
+//       return;
+//     }
+//     if (!isStrongPassword(password)) {
+//       Alert.alert('Error', t.errPwdWeak);
+//       return;
+//     }
+//     if (password !== confirmPassword) {
+//       Alert.alert('Error', t.errMatch);
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       await customerAPI.register(formData);
+//       Alert.alert(t.successTitle, t.successMsg, [
+//         { text: t.ok, onPress: () => navigation.navigate('Login') }
+//       ]);
+//     } catch (error) {
+//       Alert.alert(t.errTitle, error.message || 'Something went wrong');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <SafeAreaView style={S.safe}>
+//       <KeyboardAvoidingView
+//         style={{ flex: 1 }}
+//         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+//         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+//       >
+//         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+//           <ScrollView
+//             showsVerticalScrollIndicator={false}
+//             contentContainerStyle={S.scroll}
+//             keyboardShouldPersistTaps="handled"
+//             bounces={false}
+//           >
+//             {/* ── HEADER ── */}
+//             <View style={S.header}>
+//               <TouchableOpacity
+//                 style={S.backBtn}
+//                 onPress={() => navigation.navigate('Login')}
+//               >
+//                 <Text style={S.backArrow}>←</Text>
+//               </TouchableOpacity>
+//               <View style={{ flex: 1 }}>
+//                 <Text style={S.headerTitle}>{t.headerTitle}</Text>
+//                 <Text style={S.headerSub}>{t.headerSub}</Text>
+//               </View>
+//               <View style={S.langToggle}>
+//                 <TouchableOpacity
+//                   style={[S.langOption, lang === 'en' && S.langActive]}
+//                   onPress={() => setLang('en')}
+//                 >
+//                   <Text style={[S.langOptionText, lang === 'en' && S.langActiveText]}>EN</Text>
+//                 </TouchableOpacity>
+//                 <TouchableOpacity
+//                   style={[S.langOption, lang === 'ta' && S.langActive]}
+//                   onPress={() => setLang('ta')}
+//                 >
+//                   <Text style={[S.langOptionText, lang === 'ta' && S.langActiveText]}>த</Text>
+//                 </TouchableOpacity>
+//               </View>
+//             </View>
+
+//             <View style={S.form}>
+
+//               {/* ── Full Name ── */}
+//               <View style={S.fieldWrap}>
+//                 <Text style={S.label}>{t.labelName} <Text style={S.required}>*</Text></Text>
+//                 <TextInput
+//                   style={S.input}
+//                   placeholder={t.phName}
+//                   placeholderTextColor={C.textSecondary}
+//                   value={formData.name}
+//                   onChangeText={v => handleChange('name', v)}
+//                   returnKeyType="next"
+//                   blurOnSubmit={false}
+//                 />
+//               </View>
+
+//               {/* ── Phone ── */}
+//               <View style={S.fieldWrap}>
+//                 <Text style={S.label}>{t.labelPhone} <Text style={S.required}>*</Text></Text>
+//                 <View style={S.prefixRow}>
+//                   <View style={S.prefixBox}>
+//                     <Text style={S.prefixText}>+91</Text>
+//                   </View>
+//                   <View style={S.prefixDivider} />
+//                   <TextInput
+//                     style={S.prefixInput}
+//                     placeholder={t.phPhone}
+//                     placeholderTextColor={C.textSecondary}
+//                     value={formData.phoneNumber}
+//                     onChangeText={v => handleChange('phoneNumber', v)}
+//                     keyboardType="number-pad"
+//                     maxLength={10}
+//                     returnKeyType="next"
+//                     blurOnSubmit={false}
+//                   />
+//                 </View>
+//               </View>
+
+//               {/* ── Password ── */}
+//               <View style={S.fieldWrap}>
+//                 <Text style={S.label}>{t.labelPassword} <Text style={S.required}>*</Text></Text>
+//                 <View style={S.passwordRow}>
+//                   <TextInput
+//                     style={S.passwordInput}
+//                     placeholder={t.phPwd}
+//                     placeholderTextColor={C.textSecondary}
+//                     value={formData.password}
+//                     onChangeText={v => handleChange('password', v)}
+//                     secureTextEntry={!showPassword}
+//                     returnKeyType="next"
+//                     blurOnSubmit={false}
+//                   />
+//                   <TouchableOpacity onPress={() => setShowPassword(p => !p)} style={S.eyeBtn}>
+//                     <Text style={S.eyeIcon}>{showPassword ? '👁️' : '🙈'}</Text>
+//                   </TouchableOpacity>
+//                 </View>
+//                 {/* Strength bar */}
+//                 {formData.password.length > 0 && (
+//                   <View style={S.strengthWrap}>
+//                     <View style={S.strengthBarBg}>
+//                       <View style={[
+//                         S.strengthBarFill,
+//                         { width: STRENGTH_WIDTH[passStrength], backgroundColor: STRENGTH_COLOR[passStrength] },
+//                       ]} />
+//                     </View>
+//                     <Text style={[S.strengthLabel, { color: STRENGTH_COLOR[passStrength] }]}>
+//                       {strengthLabel}
+//                     </Text>
+//                   </View>
+//                 )}
+//                 {/* Hint text */}
+//                 {formData.password.length > 0 && passStrength !== 'strong' && (
+//                   <Text style={S.passHint}>
+//                     {lang === 'en'
+//                       ? 'Use uppercase, number & special char (!@#$%^&*)'
+//                       : 'பெரிய எழுத்து, எண் & சிறப்பு குறி (!@#$%^&*) சேர்க்கவும்'}
+//                   </Text>
+//                 )}
+//               </View>
+
+//               {/* ── Confirm Password ── */}
+//               <View style={S.fieldWrap}>
+//                 <Text style={S.label}>{t.labelConfirm} <Text style={S.required}>*</Text></Text>
+//                 <View style={S.passwordRow}>
+//                   <TextInput
+//                     style={S.passwordInput}
+//                     placeholder={t.phCpwd}
+//                     placeholderTextColor={C.textSecondary}
+//                     value={confirmPassword}
+//                     onChangeText={setConfirmPassword}
+//                     secureTextEntry={!showConfirm}
+//                     returnKeyType="next"
+//                     blurOnSubmit={false}
+//                   />
+//                   <TouchableOpacity onPress={() => setShowConfirm(p => !p)} style={S.eyeBtn}>
+//                     <Text style={S.eyeIcon}>{showConfirm ? '👁️' : '🙈'}</Text>
+//                   </TouchableOpacity>
+//                 </View>
+//                 {/* Match indicator */}
+//                 <MatchIndicator password={formData.password} confirm={confirmPassword} t={t} />
+//               </View>
+
+//               {/* ── Email (optional) ── */}
+//               <View style={S.fieldWrap}>
+//                 <Text style={S.label}>
+//                   {t.labelEmail} <Text style={S.optional}>{t.optional}</Text>
+//                 </Text>
+//                 <TextInput
+//                   style={S.input}
+//                   placeholder={t.phEmail}
+//                   placeholderTextColor={C.textSecondary}
+//                   value={formData.email}
+//                   onChangeText={v => handleChange('email', v)}
+//                   keyboardType="email-address"
+//                   returnKeyType="next"
+//                   blurOnSubmit={false}
+//                 />
+//               </View>
+
+//               {/* ── Address (optional) ── */}
+//               <View style={S.fieldWrap}>
+//                 <Text style={S.label}>
+//                   {t.labelAddress} <Text style={S.optional}>{t.optional}</Text>
+//                 </Text>
+//                 <TextInput
+//                   style={[S.input, { height: 80, paddingTop: 12, textAlignVertical: 'top' }]}
+//                   placeholder={t.phAddr}
+//                   placeholderTextColor={C.textSecondary}
+//                   value={formData.address}
+//                   onChangeText={v => handleChange('address', v)}
+//                   multiline
+//                   returnKeyType="done"
+//                   onSubmitEditing={handleRegister}
+//                 />
+//               </View>
+
+//               {/* ── Register Button ── */}
+//               <TouchableOpacity
+//                 style={[S.primaryBtn, loading && S.btnDisabled]}
+//                 onPress={handleRegister}
+//                 disabled={loading}
+//               >
+//                 {loading
+//                   ? <ActivityIndicator color={C.white} />
+//                   : <Text style={S.primaryBtnText}>{t.btnCreate}</Text>
+//                 }
+//               </TouchableOpacity>
+
+//               <TouchableOpacity
+//                 onPress={() => navigation.navigate('Login')}
+//                 style={S.linkBtn}
+//               >
+//                 <Text style={S.linkText}>{t.btnSignin}</Text>
+//               </TouchableOpacity>
+
+//             </View>
+
+//             <View style={{ height: 60 }} />
+
+//           </ScrollView>
+//         </TouchableWithoutFeedback>
+//       </KeyboardAvoidingView>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default RegisterScreen;
+
+// const S = StyleSheet.create({
+//   safe:   { flex: 1, backgroundColor: '#F8F8F8' },
+//   scroll: { flexGrow: 1, paddingBottom: 20 },
+
+//   header: {
+//     flexDirection: 'row', alignItems: 'center', gap: 12,
+//     backgroundColor: C.white, padding: 20, paddingTop: 16,
+//     borderBottomWidth: 1, borderBottomColor: C.border,
+//   },
+//   backBtn: {
+//     width: 36, height: 36, borderRadius: 18,
+//     backgroundColor: C.primaryLight, alignItems: 'center', justifyContent: 'center',
+//   },
+//   backArrow:   { fontSize: 18, color: C.primary },
+//   headerTitle: { fontSize: 22, fontWeight: '700', color: C.textPrimary },
+//   headerSub:   { fontSize: 13, color: C.textSecondary, marginTop: 2 },
+
+//   langToggle: {
+//     flexDirection: 'row', borderWidth: 1.5,
+//     borderColor: C.border, borderRadius: 10, overflow: 'hidden',
+//   },
+//   langOption:     { paddingVertical: 6, paddingHorizontal: 14, backgroundColor: C.white },
+//   langActive:     { backgroundColor: C.primary },
+//   langOptionText: { fontSize: 13, fontWeight: '700', color: C.textSecondary },
+//   langActiveText: { color: C.white },
+
+//   form: { padding: 16 },
+
+//   fieldWrap: { marginBottom: 16 },
+//   label: {
+//     fontSize: 12, fontWeight: '600', color: C.textSecondary,
+//     marginBottom: 8, letterSpacing: 0.5, textTransform: 'uppercase',
+//   },
+//   required: { color: C.error },
+//   optional: { color: C.textSecondary, fontWeight: '400', textTransform: 'none' },
+
+//   input: {
+//     height: 50, borderWidth: 1, borderColor: C.border, borderRadius: 12,
+//     paddingHorizontal: 14, fontSize: 15, color: C.textPrimary, backgroundColor: C.white,
+//   },
+
+//   // ── Phone prefix row ──────────────────────────────────
+//   prefixRow: {
+//     flexDirection: 'row', alignItems: 'center', height: 50,
+//     borderWidth: 1, borderColor: C.border, borderRadius: 12,
+//     backgroundColor: C.white, paddingHorizontal: 14,
+//   },
+//   prefixBox:    { marginRight: 6 },
+//   prefixText:   { fontSize: 14, fontWeight: '700', color: C.textPrimary },
+//   prefixDivider:{ width: 1, height: 22, backgroundColor: C.border, marginRight: 10 },
+//   prefixInput:  { flex: 1, fontSize: 15, color: C.textPrimary },
+
+//   // ── Password row ──────────────────────────────────────
+//   passwordRow: {
+//     flexDirection: 'row', alignItems: 'center', height: 50,
+//     borderWidth: 1, borderColor: C.border, borderRadius: 12,
+//     backgroundColor: C.white, paddingRight: 8,
+//   },
+//   passwordInput: { flex: 1, paddingHorizontal: 14, fontSize: 15, color: C.textPrimary },
+//   eyeBtn:        { padding: 8 },
+//   eyeIcon:       { fontSize: 18 },
+
+//   // ── Strength bar ──────────────────────────────────────
+//   strengthWrap: {
+//     flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 8,
+//   },
+//   strengthBarBg: {
+//     flex: 1, height: 4, backgroundColor: '#ECECEC', borderRadius: 2, overflow: 'hidden',
+//   },
+//   strengthBarFill: { height: '100%', borderRadius: 2 },
+//   strengthLabel:   { fontSize: 11, fontWeight: '700', minWidth: 52, textAlign: 'right' },
+
+//   passHint: {
+//     fontSize: 11, color: C.textSecondary, marginTop: 5, marginLeft: 2,
+//   },
+
+//   // ── Match indicator ───────────────────────────────────
+//   matchRow: { marginTop: 6, marginLeft: 2 },
+
+//   // ── Buttons ───────────────────────────────────────────
+//   primaryBtn: {
+//     height: 52, backgroundColor: C.primary, borderRadius: 12,
+//     alignItems: 'center', justifyContent: 'center', marginTop: 8,
+//     shadowColor: '#FF6A00', shadowOffset: { width: 0, height: 4 },
+//     shadowOpacity: 0.3, shadowRadius: 8, elevation: 5,
+//   },
+//   btnDisabled:    { opacity: 0.6 },
+//   primaryBtnText: { color: C.white, fontSize: 16, fontWeight: '700' },
+
+//   linkBtn:  { alignItems: 'center', marginTop: 20 },
+//   linkText: { color: C.primary, fontSize: 14, fontWeight: '600' },
+// });
+
+
+
+
 import { useState } from 'react';
 import {
   ActivityIndicator,
@@ -2154,8 +2654,8 @@ const C = {
   primary:       '#FF6A00',
   primaryLight:  '#FFF4EC',
   white:         '#FFFFFF',
-  textPrimary:   '#111111',
-  textSecondary: '#666666',
+  textPrimary:   '#888888',
+  textSecondary: '#AAAAAA',
   border:        '#EEEEEE',
   bg:            '#F8F8F8',
   error:         '#EF4444',
@@ -2179,12 +2679,14 @@ const LANG = {
     phEmail:  'your@email.com',
     phAddr:   'Your full address',
     btnCreate:  'Create Account →',
-    btnSignin:  'Already have an account? Sign In',
+    alreadyAccount: 'Already have an account?',
+    btnSignin:  'Sign In',
     errRequired: 'Please fill all required fields',
     errPhone:    'Phone number must be exactly 10 digits',
     errPwd:      'Password must be at least 8 characters',
     errPwdWeak:  'Password must include uppercase letter, number & special character (!@#$%^&*)',
     errMatch:    'Passwords do not match',
+    errEmail:    'Enter a valid email address',
     successTitle:'Success',
     successMsg:  'Registration successful!',
     ok:          'OK',
@@ -2211,12 +2713,14 @@ const LANG = {
     phEmail:  'உங்கள்@மின்னஞ்சல்.com',
     phAddr:   'உங்கள் முழு முகவரி',
     btnCreate:  'கணக்கு உருவாக்கு →',
-    btnSignin:  'ஏற்கனவே கணக்கு உள்ளதா? உள்நுழைக',
+    alreadyAccount: 'ஏற்கனவே கணக்கு உள்ளதா?',
+    btnSignin:  'உள்நுழைக',
     errRequired: 'தேவையான அனைத்து தகவல்களையும் நிரப்பவும்',
     errPhone:    'தொலைபேசி எண் சரியாக 10 இலக்கங்களாக இருக்க வேண்டும்',
     errPwd:      'கடவுச்சொல் குறைந்தது 8 எழுத்துகளாக இருக்க வேண்டும்',
     errPwdWeak:  'கடவுச்சொல்லில் பெரிய எழுத்து, எண் & சிறப்பு எழுத்து (!@#$%^&*) இருக்க வேண்டும்',
     errMatch:    'கடவுச்சொற்கள் பொருந்தவில்லை',
+    errEmail:    'சரியான மின்னஞ்சல் முகவரி உள்ளிடவும்',
     successTitle:'வெற்றி',
     successMsg:  'பதிவு வெற்றிகரமாக முடிந்தது!',
     ok:          'சரி',
@@ -2228,7 +2732,7 @@ const LANG = {
   },
 };
 
-// ── Password strength (same logic as LoginScreen) ────────
+// ── Password strength ─────────────────────────────────────
 const getPasswordStrength = (pass) => {
   if (!pass) return null;
   const hasUpper   = /[A-Z]/.test(pass);
@@ -2258,7 +2762,7 @@ const STRENGTH_COLOR = {
 const STRENGTH_WIDTH = { weak: '25%', fair: '50%', good: '75%', strong: '100%' };
 
 // ── Confirm password match indicator ─────────────────────
-const MatchIndicator = ({ password, confirm, t }) => {
+const MatchIndicator = ({ password, confirm }) => {
   if (!confirm) return null;
   const match = password === confirm;
   return (
@@ -2271,26 +2775,30 @@ const MatchIndicator = ({ password, confirm, t }) => {
 };
 
 const RegisterScreen = ({ navigation }) => {
-  const [formData, setFormData]         = useState({ name: '', phoneNumber: '', email: '', password: '', address: '' });
+  const [formData, setFormData]               = useState({ name: '', phoneNumber: '', email: '', password: '', address: '' });
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading]           = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm]   = useState(false);
-  const [lang, setLang]                 = useState('en');
+  const [loading, setLoading]                 = useState(false);
+  const [showPassword, setShowPassword]       = useState(false);
+  const [showConfirm, setShowConfirm]         = useState(false);
+  const [lang, setLang]                       = useState('en');
 
   const t = LANG[lang];
 
-  const passStrength   = getPasswordStrength(formData.password);
-  const strengthLabel  = passStrength ? t[`passStrength${passStrength.charAt(0).toUpperCase() + passStrength.slice(1)}`] : '';
+  const passStrength  = getPasswordStrength(formData.password);
+  const strengthLabel = passStrength
+    ? t[`passStrength${passStrength.charAt(0).toUpperCase() + passStrength.slice(1)}`]
+    : '';
 
+  // ── FIX 1: name allows only letters & spaces ─────────
   const handleChange = (field, value) => {
     if (field === 'phoneNumber') value = value.replace(/[^0-9]/g, '');
+    if (field === 'name')        value = value.replace(/[^a-zA-Z\s]/g, '');
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleRegister = async () => {
     Keyboard.dismiss();
-    const { name, phoneNumber, password } = formData;
+    const { name, phoneNumber, password, email } = formData;
 
     if (!name || !phoneNumber || !password) {
       Alert.alert('Error', t.errRequired);
@@ -2310,6 +2818,11 @@ const RegisterScreen = ({ navigation }) => {
     }
     if (password !== confirmPassword) {
       Alert.alert('Error', t.errMatch);
+      return;
+    }
+    // ── FIX 2: email validation (only if filled) ──────
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      Alert.alert('Error', t.errEmail);
       return;
     }
 
@@ -2466,8 +2979,7 @@ const RegisterScreen = ({ navigation }) => {
                     <Text style={S.eyeIcon}>{showConfirm ? '👁️' : '🙈'}</Text>
                   </TouchableOpacity>
                 </View>
-                {/* Match indicator */}
-                <MatchIndicator password={formData.password} confirm={confirmPassword} t={t} />
+                <MatchIndicator password={formData.password} confirm={confirmPassword} />
               </View>
 
               {/* ── Email (optional) ── */}
@@ -2482,6 +2994,7 @@ const RegisterScreen = ({ navigation }) => {
                   value={formData.email}
                   onChangeText={v => handleChange('email', v)}
                   keyboardType="email-address"
+                  autoCapitalize="none"
                   returnKeyType="next"
                   blurOnSubmit={false}
                 />
@@ -2516,12 +3029,13 @@ const RegisterScreen = ({ navigation }) => {
                 }
               </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Login')}
-                style={S.linkBtn}
-              >
-                <Text style={S.linkText}>{t.btnSignin}</Text>
-              </TouchableOpacity>
+              {/* ── FIX 3: white plain text + orange "Sign In" link only ── */}
+              <View style={S.linkRow}>
+                <Text style={S.linkPlain}>{t.alreadyAccount} </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                  <Text style={S.linkText}>{t.btnSignin}</Text>
+                </TouchableOpacity>
+              </View>
 
             </View>
 
@@ -2550,8 +3064,8 @@ const S = StyleSheet.create({
     backgroundColor: C.primaryLight, alignItems: 'center', justifyContent: 'center',
   },
   backArrow:   { fontSize: 18, color: C.primary },
-  headerTitle: { fontSize: 22, fontWeight: '700', color: C.textPrimary },
-  headerSub:   { fontSize: 13, color: C.textSecondary, marginTop: 2 },
+  headerTitle: { fontSize: 22, fontWeight: '700', color: '#111111' },
+  headerSub:   { fontSize: 13, color: '#666666', marginTop: 2 },
 
   langToggle: {
     flexDirection: 'row', borderWidth: 1.5,
@@ -2559,18 +3073,18 @@ const S = StyleSheet.create({
   },
   langOption:     { paddingVertical: 6, paddingHorizontal: 14, backgroundColor: C.white },
   langActive:     { backgroundColor: C.primary },
-  langOptionText: { fontSize: 13, fontWeight: '700', color: C.textSecondary },
+  langOptionText: { fontSize: 13, fontWeight: '700', color: '#666666' },
   langActiveText: { color: C.white },
 
   form: { padding: 16 },
 
   fieldWrap: { marginBottom: 16 },
   label: {
-    fontSize: 12, fontWeight: '600', color: C.textSecondary,
+    fontSize: 12, fontWeight: '600', color: '#666666',
     marginBottom: 8, letterSpacing: 0.5, textTransform: 'uppercase',
   },
   required: { color: C.error },
-  optional: { color: C.textSecondary, fontWeight: '400', textTransform: 'none' },
+  optional: { color: '#AAAAAA', fontWeight: '400', textTransform: 'none' },
 
   input: {
     height: 50, borderWidth: 1, borderColor: C.border, borderRadius: 12,
@@ -2583,10 +3097,10 @@ const S = StyleSheet.create({
     borderWidth: 1, borderColor: C.border, borderRadius: 12,
     backgroundColor: C.white, paddingHorizontal: 14,
   },
-  prefixBox:    { marginRight: 6 },
-  prefixText:   { fontSize: 14, fontWeight: '700', color: C.textPrimary },
-  prefixDivider:{ width: 1, height: 22, backgroundColor: C.border, marginRight: 10 },
-  prefixInput:  { flex: 1, fontSize: 15, color: C.textPrimary },
+  prefixBox:     { marginRight: 6 },
+  prefixText:    { fontSize: 14, fontWeight: '700', color: '#888888' },
+  prefixDivider: { width: 1, height: 22, backgroundColor: C.border, marginRight: 10 },
+  prefixInput:   { flex: 1, fontSize: 15, color: C.textPrimary },
 
   // ── Password row ──────────────────────────────────────
   passwordRow: {
@@ -2625,6 +3139,8 @@ const S = StyleSheet.create({
   btnDisabled:    { opacity: 0.6 },
   primaryBtnText: { color: C.white, fontSize: 16, fontWeight: '700' },
 
-  linkBtn:  { alignItems: 'center', marginTop: 20 },
-  linkText: { color: C.primary, fontSize: 14, fontWeight: '600' },
+  // ── FIX 3: bottom sign-in row ─────────────────────────
+  linkRow:   { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 },
+  linkPlain: { color: '#666666', fontSize: 14 },
+  linkText:  { color: C.primary, fontSize: 14, fontWeight: '600', textDecorationLine: 'underline' },
 });

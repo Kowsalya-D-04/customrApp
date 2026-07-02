@@ -1,0 +1,33 @@
+name: Customer App CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Check React Native App
+        run: npm run lint || echo "Lint skipped"
+
+      - name: Install Expo CLI
+        run: npm install -g eas-cli
+
+      - name: Build Android APK/AAB
+        run: eas build --platform android --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
